@@ -24,7 +24,7 @@ services:
 
 
   cupsd:
-    image: cupsd
+    image: ./docker_cupsd/
     networks:
       prod-srv:
         ipv4_address: 240.2.0.2
