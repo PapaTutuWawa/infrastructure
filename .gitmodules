@@ -1,0 +1,6 @@
+[submodule "bind"]
+	path = bind
+	url = git@github.com:Polynomdivision/bind.git
+[submodule "docker_cupsd"]
+	path = docker_cupsd
+	url = git@github.com:Polynomdivision/docker_cupsd.git
