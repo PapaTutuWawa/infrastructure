@@ -1,0 +1,44 @@
+version: "3.3"
+
+services:
+  bind:
+    build: ./bind/
+    networks:
+      prod-base:
+        ipv4_address: 240.1.0.2
+    volumes:
+      - /srv/internal/bind/config/named.conf:/etc/bind/named.conf:ro
+      - /srv/internal/bind/zones/:/var/named/:ro
+    read_only: true
+
+  etcd:
+    image: quay.io/coreos/etcd:latest
+    command: /usr/local/bin/etcd --listen-client-urls http://240.1.0.3:2379 --advertise-client-urls http://240.1.0.3:2379 --data-dir /etcd
+    networks:
+      prod-base:
+        ipv4_address: 240.1.0.3
+    volumes:
+      - /srv/internal/etcd/:/etcd/
+    depends_on:
+      - bind
+
+
+  cupsd:
+    image: cupsd
+    networks:
+      prod-srv:
+        ipv4_address: 240.2.0.2
+    dns: 240.1.0.2
+    volumes:
+      - /srv/internal/cupsd/cupsd.conf:/etc/cups/cupsd.conf:rw
+    depends_on:
+      - bind
+      - etcd
+
+networks:
+  prod-base:
+    external:
+      name: production-base
+  prod-srv:
+    external:
+      name: production-services
