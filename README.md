@@ -32,4 +32,15 @@ Upon starting, Cups will pull the admin hash (The hashed password) from the etcd
 Bind requires the file ```/srv/internal/bind/config``` and the folder ```/srv/internal/bind/zones``` to exist. The rootfs of the container
 is read-only.
 
+Bind will be attached to production-base.
+
 The nameserver has the IP 240.1.0.2.
+
+The domain that is should be used is ```docker.local```. The following subdomains should exist:
+- ```cups.docker.local``` -> Cups
+- ```kv.docker.local``` -> Etcd
+
+## Etcd
+Etcd requires the folder ```/srv/internal/etcd``` to exist.
+
+Etcd will be attached to production-base.
